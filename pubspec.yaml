@@ -1,0 +1,91 @@
+name: progresssoft_task
+description: "Application Development Task In Flutter Framework"
+
+version: 1.0.0
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_bloc: ^8.1.6
+  get: ^4.6.6 # Used only for language and routing
+
+  # Functional Programming
+  dartz: ^0.10.1
+
+  # For dependency injection
+  get_it: ^7.6.4
+
+  # Contains code to deal with internationalized/localized messages, date and number formatting and parsing, bi-directional text, and other internationalization issues.
+  intl: ^0.19.0
+
+  # Helps to implement value based equality without needing to explicitly override == and hashCode.
+  equatable: ^2.0.5
+
+  # Reading and writing simple key-value pairs.
+  shared_preferences: ^2.0.0
+
+  # Discovering the state of the network (WiFi & mobile/cellular)
+  connectivity_plus: ^6.0.3
+
+  # Provides a WebView widget
+  webview_flutter: ^4.8.0
+  flutter_inappwebview: ^6.0.0
+
+  # HTTP networking package
+  dio: ^5.5.0+1
+
+  # Firebase packages
+  firebase_core: ^3.2.0
+  cloud_firestore: ^5.1.0
+  firebase_auth: ^5.1.2
+  firebase_storage: ^12.1.1
+
+  # Dropdown Button widget
+  dropdown_button2: ^2.3.9
+
+  # Create a bottom item picker or date & time picker
+  bottom_picker: ^2.8.0
+
+  # Implementations of SHA, MD5, and HMAC cryptographic functions
+  crypto: ^3.0.3
+
+  # Inspired by Mockito with APIs for Fakes, Mocks, behavior verification, and stubbing
+  mockito: ^5.0.17
+
+  # Dart code generation and modular compilation
+  build_runner: ^2.1.11
+
+  # A build system for Dart code generation and modular compilation.
+  flutter_otp_text_field: ^1.1.3+2
+
+  #  SVG rendering
+  flutter_svg: ^2.0.10+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+
+
+  fonts:
+    - family: ReadexPro
+      fonts:
+        - asset: assets/fonts/Almarai-ExtraBold.ttf
+        - asset: assets/fonts/Almarai-Bold.ttf
+        - asset: assets/fonts/Almarai-Light.ttf
+        - asset: assets/fonts/Almarai-Regular.ttf

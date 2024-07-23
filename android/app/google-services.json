@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923330845913",
+    "project_id": "progress-soft-task-89821",
+    "storage_bucket": "progress-soft-task-89821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923330845913:android:8e4d6f9ca74b996e3b72c8",
+        "android_client_info": {
+          "package_name": "com.progresssoft.progresssoft_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM6RQ6IQ2p63Aw47kj0sGdnAdVYZRA7DM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
