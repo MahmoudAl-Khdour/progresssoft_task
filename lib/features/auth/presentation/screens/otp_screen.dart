@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
 import 'package:progresssoft_task/core/routes/app_routes.dart';
+import 'package:progresssoft_task/core/strings/messages.dart';
 import 'package:progresssoft_task/core/utils/constant/app_defaults.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_button.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_loading.dart';
+import 'package:progresssoft_task/features/app/presentation/shared/components/custom_snack_bar.dart';
 import 'package:progresssoft_task/features/auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:progresssoft_task/features/auth/presentation/widgets/sign_widget.dart';
 
@@ -29,7 +31,7 @@ class OTPScreen extends StatelessWidget {
     return SignWidget(
       title: 'OTP',
       body: BlocConsumer<SignUpBloc, SignUpState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is VerifyOTPSuccessState) {
             context.read<SignUpBloc>().add(
                   SignUpSubmitEvent(
@@ -40,7 +42,23 @@ class OTPScreen extends StatelessWidget {
                     age: age,
                   ),
                 );
-            Get.toNamed(AppRoutes.base);
+
+            CustomSnackBar.success(
+              title: 'Sign Up'.tr,
+              message: AppMessages.createAccountMessage,
+            );
+
+            await Future.delayed(
+              const Duration(seconds: 1),
+              () {
+                Get.toNamed(AppRoutes.base);
+              },
+            );
+          } else if (state is SignUpErrorState) {
+            CustomSnackBar.error(
+                title: 'Sign Up'.tr, message: state.errorMessage);
+          } else if (state is VerifyOTPErrorState) {
+            CustomSnackBar.error(title: 'OTP'.tr, message: state.errorMessage);
           }
         },
         builder: (context, state) {
@@ -57,7 +75,7 @@ class OTPScreen extends StatelessWidget {
                   height: AppDefaults.defaultVerticalSpaceBetweenBigWidget,
                 ),
                 Text(
-                  '+962$phoneNumber',
+                  phoneNumber,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,

@@ -1,6 +1,9 @@
 class OfflineException implements Exception {}
 
-class ServerException implements Exception {}
+class ServerException implements Exception {
+  final String msg;
+  ServerException({required this.msg});
+}
 
 class EmptyCacheException implements Exception {}
 

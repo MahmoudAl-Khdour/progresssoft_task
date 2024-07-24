@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progresssoft_task/core/helper/cache_helper.dart';
+import 'package:progresssoft_task/core/strings/messages.dart';
 import 'package:progresssoft_task/features/app/repository/app_repository.dart';
 import 'package:progresssoft_task/features/auth/domain/entites/user_info.dart';
 import 'package:progresssoft_task/features/auth/domain/usecases/sign_in.dart';
@@ -11,8 +12,9 @@ part 'sign_in_state.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final SignInUseCase signInUseCase;
   final AppRepository appRepository;
+
   SignInBloc({required this.signInUseCase, required this.appRepository})
-      : super(SignInInitialState()) {
+      : super(PasswordHiddenState()) {
     on<TogglePasswordVisibilityEvent>((event, emit) {
       if (state is PasswordHiddenState) {
         emit(PasswordVisibleState());
@@ -39,7 +41,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     result.fold(
       (failure) {
-        emit(SignInErrorState('Sign in failed'));
+        emit(SignInErrorState(
+            failure.message ?? AppMessages.somethingWentWrongMessage));
       },
       (user) {
         CacheHelper.setData(key: 'isLogin', value: true);

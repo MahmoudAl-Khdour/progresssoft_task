@@ -21,6 +21,8 @@ class SignUpErrorState extends SignUpState {
   List<Object> get props => [errorMessage];
 }
 
+class PhoneAuthLoadingState extends SignUpState {}
+
 class PhoneAuthSuccessState extends SignUpState {}
 
 class PhoneAuthErrorState extends SignUpState {

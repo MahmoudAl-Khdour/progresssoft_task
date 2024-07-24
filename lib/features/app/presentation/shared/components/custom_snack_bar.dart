@@ -104,7 +104,6 @@ class CustomSnackBar {
   }
 
   static void success({
-    required BuildContext context,
     required final String title,
     required final String message,
   }) {

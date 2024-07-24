@@ -7,10 +7,12 @@ import 'package:get/get.dart';
 import 'package:progresssoft_task/core/routes/app_routes.dart';
 import 'package:progresssoft_task/core/utils/constant/app_colors.dart';
 import 'package:progresssoft_task/core/utils/constant/app_defaults.dart';
+import 'package:progresssoft_task/core/utils/constant/app_sizes.dart';
 import 'package:progresssoft_task/core/utils/regex.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_button.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_drop_down.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_form_filed.dart';
+import 'package:progresssoft_task/features/app/presentation/shared/components/custom_snack_bar.dart';
 import 'package:progresssoft_task/features/auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
 
 import '../widgets/sign_widget.dart';
@@ -25,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   IconData getConfirmPasswordIcon(SignUpState state) {
-    return state is PasswordHiddenState
+    return state is ConfirmPasswordHiddenState
         ? Icons.visibility_outlined
         : Icons.visibility_off_outlined;
   }
@@ -52,20 +54,21 @@ class SignUpScreen extends StatelessWidget {
           Get.toNamed(
             AppRoutes.otp,
             arguments: {
-              'phoneNumber': phoneController.text,
+              'phoneNumber': '$countryCode${phoneController.text}',
               'fullName': fullNameController.text,
               'gender': gender,
               'password': passwordController.text,
               'age': age,
             },
           );
+        } else if (state is PhoneAuthErrorState) {
+          CustomSnackBar.error(
+              title: 'Sign Up'.tr, message: state.errorMessage);
         }
-
-        if (state is PhoneAuthErrorState) {}
       },
       builder: (context, state) {
         return SignWidget(
-          title: 'Sign up'.tr,
+          title: 'Sign Up'.tr,
           withAppBar: true,
           body: Form(
             key: formKey,
@@ -120,6 +123,15 @@ class SignUpScreen extends StatelessWidget {
                       height: AppDefaults.defaultVerticalSpaceBetweenWidget,
                     ),
                     CustomFormFiled(
+                      validator: (phone) {
+                        if (phone == null || phone.isEmpty) {
+                          return 'Phone Required'.tr;
+                        } else if (!(RegexValidator.isValidPhoneNumber(
+                            phone))) {
+                          return 'Phone number must continue from 9 numbers'.tr;
+                        }
+                        return null;
+                      },
                       controller: phoneController,
                       cursorColor: Theme.of(context).primaryColor,
                       keyboardType: TextInputType.visiblePassword,
@@ -172,13 +184,9 @@ class SignUpScreen extends StatelessWidget {
                     CustomFormFiled(
                       onTap: () {
                         BottomPicker.date(
-                          pickerTitle: const Text(
-                            'Set your Birthday',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.blue,
-                            ),
+                          pickerTitle: Text(
+                            'Set your Birthdate'.tr,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           dateOrder: DatePickerDateOrder.dmy,
                           initialDateTime: DateTime(1996, 10, 22),
@@ -189,10 +197,27 @@ class SignUpScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
-                          onChange: (index) {},
-                          onSubmit: (index) {},
+                          buttonWidth: AppSizeConfig.screenWidth * 0.8,
+                          onChange: (index) {
+                            List<String> parts = index.toString().split(' ');
+                            DateTime birthDate = DateTime.parse(
+                                birthdayController.text = parts[0]);
+                            age = _calculateAge(birthDate);
+                          },
+                          onSubmit: (index) {
+                            List<String> parts = index.toString().split(' ');
+                            DateTime birthDate = DateTime.parse(
+                                birthdayController.text = parts[0]);
+                            age = _calculateAge(birthDate);
+                          },
                           bottomPickerTheme: BottomPickerTheme.plumPlate,
                         ).show(context);
+                      },
+                      validator: (birthday) {
+                        if (birthday == null || birthday.isEmpty) {
+                          return 'Birthdate required'.tr;
+                        }
+                        return null;
                       },
                       controller: birthdayController,
                       cursorColor: Theme.of(context).primaryColor,
@@ -210,7 +235,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       textColor: Theme.of(context).primaryColor,
                       filled: false,
-                      label: 'Birth Date'.tr,
+                      label: 'BirthDate'.tr,
                       hintStyle: Theme.of(context).textTheme.labelMedium!,
                       labelStyle: Theme.of(context).textTheme.labelMedium!,
                       borderRadius: BorderRadius.circular(
@@ -297,6 +322,9 @@ class SignUpScreen extends StatelessWidget {
                       validator: (password) {
                         if (password == null || password.isEmpty) {
                           return 'Password Required'.tr;
+                        } else if (password != confirmPasswordController.text) {
+                          return 'Password and confirm password does not matches'
+                              .tr;
                         }
                         return null;
                       },
@@ -344,6 +372,9 @@ class SignUpScreen extends StatelessWidget {
                       validator: (cPassword) {
                         if (cPassword == null || cPassword.isEmpty) {
                           return 'Confirm Password Required'.tr;
+                        } else if (cPassword != passwordController.text) {
+                          return 'Confirm password and password does not matches'
+                              .tr;
                         }
                         return null;
                       },
@@ -364,7 +395,7 @@ class SignUpScreen extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      isPassword: state is PasswordHiddenState,
+                      isPassword: state is ConfirmPasswordHiddenState,
                       enabled: true,
                       readOnly: false,
                       autofocus: false,
@@ -388,9 +419,14 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     CustomButton(
                       onTap: () async {
-                        context.read<SignUpBloc>().add(PhoneNumberAuthEvent(
-                            phoneNumber:
-                                '$countryCode${phoneController.text}'));
+                        if (formKey.currentState!.validate()) {
+                          context.read<SignUpBloc>().add(
+                                PhoneNumberAuthEvent(
+                                  phoneNumber:
+                                      '$countryCode${phoneController.text}',
+                                ),
+                              );
+                        }
                       },
                       text: 'Sign Up'.tr,
                       textColor: Theme.of(context).scaffoldBackgroundColor,
@@ -445,5 +481,18 @@ class SignUpScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  int _calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+
+    if (currentDate.month < birthDate.month ||
+        (currentDate.month == birthDate.month &&
+            currentDate.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
   }
 }

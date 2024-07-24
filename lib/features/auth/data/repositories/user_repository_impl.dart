@@ -13,6 +13,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure, Unit>> createUser({required UserInfo userInfo}) async {
+    // Convert UserInfo to UserModel
     UserModel userModel = UserModel(
       fullName: userInfo.fullName,
       phoneNumber: userInfo.phoneNumber,
@@ -22,10 +23,13 @@ class UserRepositoryImpl implements UserRepository {
     );
 
     try {
-      await firebaseService.createUser(user: userModel);
-      return const Right(unit);
-    } on ServerException {
-      return Left(ServerFailure());
+      final result = await firebaseService.createUser(user: userModel);
+
+      return result;
+    } on ServerException catch (error) {
+      return Left(ServerFailure(message: error.msg));
+    } catch (error) {
+      return Left(ServerFailure(message: error.toString()));
     }
   }
 
@@ -35,24 +39,25 @@ class UserRepositoryImpl implements UserRepository {
     required String password,
   }) async {
     try {
-      UserModel? userModel = await firebaseService.signIn(
+      final result = await firebaseService.signIn(
         phoneNumber: phoneNumber,
         password: password,
       );
 
-      if (userModel != null) {
-        return Right(UserInfo(
+      return result.fold(
+        (failure) => Left(failure),
+        (userModel) => Right(UserInfo(
           fullName: userModel.fullName,
           phoneNumber: userModel.phoneNumber,
           password: userModel.password,
           gender: userModel.gender,
           age: userModel.age,
-        ));
-      } else {
-        return Left(ServerFailure());
-      }
-    } on ServerException {
-      return Left(ServerFailure());
+        )),
+      );
+    } on ServerException catch (error) {
+      return Left(ServerFailure(message: error.msg));
+    } catch (error) {
+      return Left(ServerFailure(message: error.toString()));
     }
   }
 
@@ -61,20 +66,26 @@ class UserRepositoryImpl implements UserRepository {
     required String phoneNumber,
   }) async {
     try {
-      await firebaseService.phoneAuthentication(phoneNumber: phoneNumber);
-      return const Right(unit);
-    } on ServerException {
-      return Left(ServerFailure());
+      final result =
+          await firebaseService.phoneAuthentication(phoneNumber: phoneNumber);
+      return result;
+    } on ServerException catch (error) {
+      return Left(ServerFailure(message: error.msg));
+    } catch (error) {
+      return Left(ServerFailure(message: error.toString()));
     }
   }
 
   @override
   Future<Either<Failure, Unit>> verifyOTP({required String otpCode}) async {
     try {
-      await firebaseService.verifyOTP(otpCode: otpCode);
-      return const Right(unit);
-    } on ServerException {
-      return Left(ServerFailure());
+      final result = await firebaseService.verifyOTP(otpCode: otpCode);
+
+      return result;
+    } on ServerException catch (error) {
+      return Left(ServerFailure(message: error.msg));
+    } catch (error) {
+      return Left(ServerFailure(message: error.toString()));
     }
   }
 }

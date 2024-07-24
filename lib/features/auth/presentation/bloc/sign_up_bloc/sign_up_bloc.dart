@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progresssoft_task/core/helper/cache_helper.dart';
+import 'package:progresssoft_task/core/strings/messages.dart';
 import 'package:progresssoft_task/features/app/repository/app_repository.dart';
 import 'package:progresssoft_task/features/auth/domain/entites/user_info.dart';
 import 'package:progresssoft_task/features/auth/domain/usecases/auth_phone_number.dart';
@@ -23,23 +24,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     required this.verifyOTPUseCase,
     required this.appRepository,
   }) : super(SignUpInitialState()) {
-    // For password visibility
     on<TogglePasswordVisibilityEvent>((event, emit) {
-      if (state is PasswordHiddenState) {
-        emit(PasswordVisibleState());
-      } else {
-        emit(PasswordHiddenState());
-      }
+      emit(state is PasswordHiddenState
+          ? PasswordVisibleState()
+          : PasswordHiddenState());
     });
-    // For confirm password visibility
+
     on<ToggleConfirmPasswordVisibilityEvent>((event, emit) {
-      if (state is ConfirmPasswordHiddenState) {
-        emit(ConfirmPasswordVisibleState());
-      } else {
-        emit(ConfirmPasswordHiddenState());
-      }
+      emit(state is ConfirmPasswordHiddenState
+          ? ConfirmPasswordVisibleState()
+          : ConfirmPasswordHiddenState());
     });
-    // For gender selection
+
     on<SelectGenderEvent>((event, emit) {
       emit(GenderSelectedState(event.gender));
     });
@@ -63,7 +59,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   ) async {
     emit(SignUpLoadingState());
 
-    // Prepare user info
     final userInfo = UserInfo(
       fullName: event.fullName,
       phoneNumber: event.phoneNumber,
@@ -72,18 +67,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       age: event.age,
     );
 
-    // Call CreateUserUseCase
     final result = await createUserUseCase.call(userInfo: userInfo);
 
     result.fold(
       (failure) {
-        emit(SignUpErrorState('')); // Handle failure
+        emit(SignUpErrorState(
+            failure.message ?? AppMessages.somethingWentWrongMessage));
       },
       (_) {
         CacheHelper.setData(key: 'isLogin', value: true);
         CacheHelper.setData(key: 'userInfo', value: UserInfo.encode(userInfo));
         appRepository.userInfo = userInfo;
-        emit(SignUpSuccessState()); // Handle success
+        emit(SignUpSuccessState());
       },
     );
   }
@@ -92,17 +87,19 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     PhoneNumberAuthEvent event,
     Emitter<SignUpState> emit,
   ) async {
-    // Call CreateUserUseCase
+    emit(PhoneAuthLoadingState());
+
     final result = await phoneNumberAuthenticationUseCase.call(
       phoneNumber: event.phoneNumber,
     );
 
     result.fold(
       (failure) async {
-        emit(PhoneAuthErrorState('')); // Handle failure
+        emit(PhoneAuthErrorState(
+            failure.message ?? AppMessages.somethingWentWrongMessage));
       },
       (_) async {
-        emit(PhoneAuthSuccessState()); // Handle failure
+        emit(PhoneAuthSuccessState());
       },
     );
   }
@@ -111,18 +108,19 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     VerifyOTPCodeEvent event,
     Emitter<SignUpState> emit,
   ) async {
-    // Call verifyOTPUseCase
+    emit(VerifyOTPLoadingState());
+
     final result = await verifyOTPUseCase.call(
       otpCode: event.otpCode,
     );
 
     result.fold(
       (failure) {
-        emit(VerifyOTPErrorState('')); // Handle failure
+        emit(VerifyOTPErrorState(
+            failure.message ?? AppMessages.somethingWentWrongMessage));
       },
       (_) {
-        emit(VerifyOTPSuccessState()); // Handle success
-        // Navigate to OTP verification page
+        emit(VerifyOTPSuccessState());
       },
     );
   }

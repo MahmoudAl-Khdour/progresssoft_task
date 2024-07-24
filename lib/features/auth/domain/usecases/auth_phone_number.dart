@@ -10,6 +10,7 @@ class PhoneNumberAuthenticationUseCase {
     required String phoneNumber,
   }) async {
     return await userRepository.phoneNumberAuthentication(
-        phoneNumber: phoneNumber);
+      phoneNumber: phoneNumber,
+    );
   }
 }

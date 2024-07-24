@@ -6,6 +6,7 @@ import 'package:progresssoft_task/core/utils/constant/app_colors.dart';
 import 'package:progresssoft_task/core/utils/constant/app_defaults.dart';
 import 'package:progresssoft_task/core/utils/constant/app_images.dart';
 import 'package:progresssoft_task/core/utils/constant/app_sizes.dart';
+import 'package:progresssoft_task/core/utils/regex.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_button.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_form_filed.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_loading.dart';
@@ -36,7 +37,9 @@ class SignInScreen extends StatelessWidget {
           Get.offAllNamed(AppRoutes.base);
         } else if (state is SignInErrorState) {
           CustomSnackBar.error(
-              title: 'Sign In'.tr, message: 'Sign in failed'.tr);
+            title: 'Sign In'.tr,
+            message: state.errorMessage,
+          );
         }
       },
       builder: (context, state) {
@@ -71,7 +74,8 @@ class SignInScreen extends StatelessWidget {
                       validator: (phone) {
                         if (phone == null || phone.isEmpty) {
                           return 'Phone Required'.tr;
-                        } else if (phone.length != 9) {
+                        } else if (!(RegexValidator.isValidPhoneNumber(
+                            phone))) {
                           return 'Phone number must continue from 9 numbers'.tr;
                         }
                         return null;
@@ -183,7 +187,8 @@ class SignInScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     context.read<SignInBloc>().add(
                                         SignInSubmitEvent(
-                                            phoneNumber: phoneController.text,
+                                            phoneNumber:
+                                                '$countryCode${phoneController.text}',
                                             password: passwordController.text));
                                   }
                                 },

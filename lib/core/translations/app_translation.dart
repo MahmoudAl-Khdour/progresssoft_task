@@ -33,6 +33,28 @@ class AppTranslation extends Translations {
           'Enter the 6-digit OTP code sent through your SMS to verify your phone':
               'أدخل رمز OTP المكون من 6 أرقام المرسل عبر رسالة SMS للتحقق من رقم هاتفك',
           'Confirmation': 'تأكيد',
+          'Set your Birthdate': 'حدد تاريخ ميلادك',
+          'Birthdate required': 'تاريخ الميلاد مطلوب',
+          "User already used": "تم استخدام هذا المستخدم بالفعل",
+          "The OTP code is invalid": "رمز التحقق غير صالح",
+          "The OTP session has expired": "جلسة التحقق من الرمز منتهية",
+          "Too many requests send": "تم إرسال العديد من الطلبات",
+          "User does not exist": "المستخدم غير موجود",
+          "Created account successfully": "تم إنشاء الحساب بنجاح",
+          "Incorrect phone number or password":
+              "رقم الهاتف أو كلمة المرور غير صحيحة",
+          "Something went wrong please try again later":
+              "حدث خطأ ما، يرجى المحاولة مرة أخرى لاحقاً",
+          "Verification failed": "فشلت عملية التحقق",
+          'Full name is required': 'الاسم الكامل مطلوب',
+          'Write your full name correctly': 'اكتب اسمك الكامل بشكل صحيح',
+          'BirthDate': 'تاريخ الميلاد',
+          'Password and confirm password does not matches':
+              'كلمة المرور وتأكيد كلمة المرور غير متطابقين',
+          'Confirm password and password does not matches':
+              'تأكيد كلمة المرور وكلمة المرور غير متطابقين',
+          'Do you have account ?': 'هل لديك حساب؟',
+          "Sign in": "تسجيل الدخول",
         },
         // English
         'en': {},
