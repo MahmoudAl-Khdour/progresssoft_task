@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progresssoft_task/core/helper/cache_helper.dart';
 import 'package:progresssoft_task/core/strings/messages.dart';
-import 'package:progresssoft_task/features/app/repository/app_repository.dart';
+import 'package:progresssoft_task/core/utils/repository/app_repository.dart';
 import 'package:progresssoft_task/features/auth/domain/entites/user_info.dart';
 import 'package:progresssoft_task/features/auth/domain/usecases/sign_in.dart';
 
@@ -10,8 +10,8 @@ part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
-  final SignInUseCase signInUseCase;
   final AppRepository appRepository;
+  final SignInUseCase signInUseCase;
 
   SignInBloc({required this.signInUseCase, required this.appRepository})
       : super(PasswordHiddenState()) {
@@ -25,6 +25,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     on<SignInSubmitEvent>((event, emit) async {
       await _onSignInSubmit(event, emit);
+    });
+
+    on<SelectCountryCodeEvent>((event, emit) {
+      emit(CountryCodeSelectedState(event.countryCode));
     });
   }
 

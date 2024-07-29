@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:progresssoft_task/features/main/presentation/bloc/app_bloc.dart';
+import 'package:progresssoft_task/features/main/presentation/bloc/base_bloc/base_bloc.dart';
 import 'package:progresssoft_task/features/main/presentation/screens/home_screen.dart';
 import 'package:progresssoft_task/features/main/presentation/screens/profile_screen.dart';
 
@@ -12,7 +12,7 @@ class BaseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<AppBloc, AppState>(
+      child: BlocBuilder<BaseBloc, BaseState>(
         builder: (context, state) {
           int currentIndex =
               (state is ChangeCurrentIndexState) ? state.index : 1;
@@ -30,11 +30,11 @@ class BaseWidget extends StatelessWidget {
                 ],
               ),
               child: NavigationBar(
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                 selectedIndex: currentIndex,
                 elevation: 27,
                 onDestinationSelected: (int index) {
-                  BlocProvider.of<AppBloc>(context)
+                  BlocProvider.of<BaseBloc>(context)
                       .add(ChangeCurrentIndexEvent(index: index));
                 },
                 backgroundColor: Theme.of(context).bottomAppBarTheme.color,

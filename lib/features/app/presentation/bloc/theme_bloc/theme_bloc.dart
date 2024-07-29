@@ -60,27 +60,27 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         MediaQuery.platformBrightnessOf(context);
 
     SystemChrome.setSystemUIOverlayStyle(state.themeMode == ThemeMode.light
-        ? SystemUiOverlayStyle(
+        ? const SystemUiOverlayStyle(
             statusBarBrightness: Brightness.light,
             statusBarColor: AppColors.appLightColor,
             statusBarIconBrightness: Brightness.dark,
             systemNavigationBarIconBrightness: Brightness.dark,
           )
         : state.themeMode == ThemeMode.dark
-            ? SystemUiOverlayStyle(
+            ? const SystemUiOverlayStyle(
                 statusBarBrightness: Brightness.dark,
                 statusBarColor: AppColors.appBlackColor,
                 statusBarIconBrightness: Brightness.light,
                 systemNavigationBarColor: AppColors.appBlackColor,
               )
             : platformBrightness == Brightness.light
-                ? SystemUiOverlayStyle(
+                ? const SystemUiOverlayStyle(
                     statusBarBrightness: Brightness.light,
                     statusBarColor: AppColors.appLightColor,
                     statusBarIconBrightness: Brightness.dark,
                     systemNavigationBarIconBrightness: Brightness.dark,
                   )
-                : SystemUiOverlayStyle(
+                : const SystemUiOverlayStyle(
                     statusBarBrightness: Brightness.dark,
                     statusBarColor: AppColors.appBlackColor,
                     statusBarIconBrightness: Brightness.light,

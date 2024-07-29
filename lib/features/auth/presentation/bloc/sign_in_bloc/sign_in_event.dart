@@ -19,3 +19,12 @@ class SignInSubmitEvent extends SignInEvent {
   @override
   List<Object> get props => [phoneNumber, password];
 }
+
+class SelectCountryCodeEvent extends SignInEvent {
+  final String countryCode;
+
+  SelectCountryCodeEvent(this.countryCode);
+
+  @override
+  List<Object?> get props => [countryCode];
+}

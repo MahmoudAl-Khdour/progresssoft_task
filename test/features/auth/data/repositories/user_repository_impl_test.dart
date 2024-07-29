@@ -44,10 +44,10 @@ void main() {
       'should return [Failure] when the call to the repository is unsuccessful',
       () async {
     // Arrange
-    final tFailure = ServerFailure();
+    const tFailure = ServerFailure();
     when(mockUserRepository.verifyOTP(
       otpCode: anyNamed('otpCode'),
-    )).thenAnswer((_) async => Left(tFailure));
+    )).thenAnswer((_) async => const Left(tFailure));
 
     // Act
     final result = await useCase.call(
@@ -55,7 +55,7 @@ void main() {
     );
 
     // Assert
-    expect(result, Left(tFailure));
+    expect(result, const Left(tFailure));
     verify(mockUserRepository.verifyOTP(
       otpCode: tOtpCode,
     ));

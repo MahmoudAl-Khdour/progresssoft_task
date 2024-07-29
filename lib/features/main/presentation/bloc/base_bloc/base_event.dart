@@ -1,12 +1,11 @@
-part of 'app_bloc.dart';
+part of 'base_bloc.dart';
 
-@immutable
-abstract class AppEvent extends Equatable {
+abstract class BaseEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class ChangeCurrentIndexEvent extends AppEvent {
+class ChangeCurrentIndexEvent extends BaseEvent {
   final int index;
   ChangeCurrentIndexEvent({required this.index});
 

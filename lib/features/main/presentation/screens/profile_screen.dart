@@ -8,7 +8,7 @@ import 'package:progresssoft_task/core/utils/constant/app_defaults.dart';
 import 'package:progresssoft_task/core/utils/constant/app_images.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_bottom_sheet/custom_langauge_bottom_sheet.dart';
 import 'package:progresssoft_task/features/app/presentation/shared/components/custom_bottom_sheet/custom_theme_bottom_sheet.dart';
-import 'package:progresssoft_task/features/main/presentation/bloc/app_bloc.dart';
+import 'package:progresssoft_task/features/main/presentation/bloc/main_bloc/main_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
             left: AppDefaults.defaultLeftPadding,
           ),
           children: [
-            BlocProvider.of<AppBloc>(context).appRepository.userInfo != null
+            BlocProvider.of<MainBloc>(context).appRepository.userInfo != null
                 ? Column(
                     children: [
                       Container(
@@ -78,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                BlocProvider.of<AppBloc>(context)
+                                BlocProvider.of<MainBloc>(context)
                                     .appRepository
                                     .userInfo!
                                     .fullName,
@@ -133,7 +133,10 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                '${BlocProvider.of<AppBloc>(context).countryCode}${BlocProvider.of<AppBloc>(context).appRepository.userInfo!.phoneNumber}',
+                                BlocProvider.of<MainBloc>(context)
+                                    .appRepository
+                                    .userInfo!
+                                    .phoneNumber,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -185,7 +188,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                BlocProvider.of<AppBloc>(context)
+                                BlocProvider.of<MainBloc>(context)
                                             .appRepository
                                             .userInfo!
                                             .gender ==
@@ -243,7 +246,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                BlocProvider.of<AppBloc>(context)
+                                BlocProvider.of<MainBloc>(context)
                                     .appRepository
                                     .userInfo!
                                     .age

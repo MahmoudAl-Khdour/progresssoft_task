@@ -21,8 +21,8 @@ class AppTheme {
     ),
     drawerTheme: DrawerThemeData(
       backgroundColor: AppColors.lightDefaultColor,
-      shadowColor: AppColors.appLightColor!.withOpacity(0.2),
-      scrimColor: AppColors.appLightColor!.withOpacity(0.8),
+      shadowColor: AppColors.appLightColor.withOpacity(0.2),
+      scrimColor: AppColors.appLightColor.withOpacity(0.8),
     ),
     dropdownMenuTheme: const DropdownMenuThemeData(
       textStyle: TextStyle(
@@ -121,11 +121,11 @@ class AppTheme {
         size: 20,
       ),
       selectedLabelStyle: TextStyle(
-        color: AppColors.lightDefaultColor,
+        color: Colors.grey,
         fontSize: 12,
       ),
       unselectedLabelStyle: TextStyle(
-        color: AppColors.appBlackColor,
+        color: Colors.grey,
         fontSize: 11,
       ),
       backgroundColor: AppColors.appWhiteColor,
@@ -136,16 +136,16 @@ class AppTheme {
       backgroundColor: AppColors.darkNavBarColor,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       surfaceTintColor: AppColors.appLightColor,
-      labelTextStyle: MaterialStateTextStyle.resolveWith(
+      labelTextStyle: WidgetStateTextStyle.resolveWith(
         (states) {
-          if (states.contains(MaterialState.selected)) {
-            return const TextStyle(
-              color: AppColors.lightDefaultColor,
+          if (states.contains(WidgetState.selected)) {
+            return TextStyle(
+              color: Colors.grey[200],
               fontSize: 13,
             ); // Color when the button is pressed
           }
-          return const TextStyle(
-            color: AppColors.appBlackColor,
+          return TextStyle(
+            color: Colors.grey[200],
             fontSize: 11,
           );
         },
@@ -303,9 +303,9 @@ class AppTheme {
       backgroundColor: AppColors.darkNavBarColor,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       surfaceTintColor: AppColors.appLightColor,
-      labelTextStyle: MaterialStateTextStyle.resolveWith(
+      labelTextStyle: WidgetStateTextStyle.resolveWith(
         (states) {
-          if (states.contains(MaterialState.selected)) {
+          if (states.contains(WidgetState.selected)) {
             return const TextStyle(
               color: AppColors.darkDefaultColor,
               fontSize: 13,

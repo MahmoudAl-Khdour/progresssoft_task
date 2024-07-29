@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -74,16 +75,20 @@ class SignInScreen extends StatelessWidget {
                       validator: (phone) {
                         if (phone == null || phone.isEmpty) {
                           return 'Phone Required'.tr;
-                        } else if (!(RegexValidator.isValidPhoneNumber(
-                            phone))) {
-                          return 'Phone number must continue from 9 numbers'.tr;
+                        } else if (!(RegexValidator.isValid(
+                            filed: '$countryCode$phone',
+                            regexStatement: context
+                                .read<SignInBloc>()
+                                .appRepository
+                                .validators!
+                                .phone[countryCode]!))) {
+                          return 'Invalid phone number'.tr;
                         }
                         return null;
                       },
-                      maxLength: 9,
                       controller: phoneController,
                       cursorColor: Theme.of(context).primaryColor,
-                      keyboardType: TextInputType.visiblePassword,
+                      keyboardType: TextInputType.phone,
                       isPassword: false,
                       enabled: true,
                       readOnly: false,
@@ -91,29 +96,83 @@ class SignInScreen extends StatelessWidget {
                       borderColors: AppColors.appBorderColor,
                       focusBorderColor: AppColors.appBorderColor,
                       borderWidth: 1,
-                      prefixIcon: SizedBox(
-                        width: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.phone,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            const SizedBox(
-                              width: AppDefaults
-                                  .defaultHorizontalSpaceBetweenSmallWidget,
-                            ),
-                            Text(
-                              countryCode,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color: Theme.of(context).primaryColor,
+                      prefixIcon: InkWell(
+                        onTap: () {
+                          showCountryPicker(
+                            context: context,
+                            countryFilter: context
+                                .read<SignInBloc>()
+                                .appRepository
+                                .countries!
+                                .countries,
+                            showPhoneCode: true,
+                            onSelect: (Country country) {
+                              context.read<SignInBloc>().add(
+                                  SelectCountryCodeEvent(
+                                      '+${country.phoneCode}'));
+                            },
+                            showSearch: true,
+                            countryListTheme: CountryListThemeData(
+                              bottomSheetHeight:
+                                  AppSizeConfig.screenHeight * 0.4,
+                              borderRadius: BorderRadius.circular(
+                                  AppDefaults.defaultLeftRadius),
+                              inputDecoration: InputDecoration(
+                                labelText: 'Search'.tr,
+                                hintText: 'Start typing to search'.tr,
+                                prefixIcon: const Icon(Icons.search),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: AppDefaults
+                                      .defaultHorizontalSpaceBetweenWidget,
+                                  vertical: AppDefaults
+                                      .defaultVerticalSpaceBetweenWidget,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: const Color(0xFF8C98A8)
+                                        .withOpacity(0.2),
                                   ),
+                                ),
+                              ),
+                              searchTextStyle:
+                                  Theme.of(context).textTheme.bodyMedium,
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              flagSize: 25.0,
                             ),
-                          ],
+                            useSafeArea: true,
+                          );
+                        },
+                        child: SizedBox(
+                          width: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_drop_down,
+                                size: 20,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              const SizedBox(
+                                width: AppDefaults
+                                        .defaultHorizontalSpaceBetweenSmallWidget -
+                                    3,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  text: state is CountryCodeSelectedState
+                                      ? state.countryCode
+                                      : countryCode,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       textColor: Theme.of(context).primaryColor,
@@ -124,6 +183,7 @@ class SignInScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(
                         AppDefaults.defaultRightRadius,
                       ),
+                      maxLength: 10,
                       pressablePrefix: false,
                     ),
                     const SizedBox(
@@ -134,6 +194,14 @@ class SignInScreen extends StatelessWidget {
                       validator: (password) {
                         if (password == null || password.isEmpty) {
                           return 'Password Required'.tr;
+                        } else if (!(RegexValidator.isValid(
+                            filed: passwordController.text,
+                            regexStatement: context
+                                .read<SignInBloc>()
+                                .appRepository
+                                .validators!
+                                .password))) {
+                          return 'Invalid password style'.tr;
                         }
                         return null;
                       },

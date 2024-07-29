@@ -42,16 +42,16 @@ void main() {
       'should return [Failure] when the call to the repository is unsuccessful',
       () async {
     // Arrange
-    final tFailure = ServerFailure();
+    const tFailure = ServerFailure();
     when(mockUserRepository.phoneNumberAuthentication(
             phoneNumber: anyNamed('phoneNumber')))
-        .thenAnswer((_) async => Left(tFailure));
+        .thenAnswer((_) async => const Left(tFailure));
 
     // Act
     final result = await useCase.call(phoneNumber: tPhoneNumber);
 
     // Assert
-    expect(result, Left(tFailure));
+    expect(result, const Left(tFailure));
     verify(mockUserRepository.phoneNumberAuthentication(
         phoneNumber: tPhoneNumber));
     verifyNoMoreInteractions(mockUserRepository);

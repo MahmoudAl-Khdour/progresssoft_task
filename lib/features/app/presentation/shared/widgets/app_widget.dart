@@ -7,12 +7,14 @@ import 'package:progresssoft_task/core/styles/app_theme/app_theme.dart';
 import 'package:progresssoft_task/core/translations/app_translation.dart';
 import 'package:progresssoft_task/core/utils/constant/app_colors.dart';
 import 'package:progresssoft_task/core/utils/injections.dart' as di;
+import 'package:progresssoft_task/core/utils/repository/app_repository.dart';
+import 'package:progresssoft_task/features/app/presentation/bloc/app_bloc/app_bloc.dart';
 import 'package:progresssoft_task/features/app/presentation/bloc/theme_bloc/theme_bloc.dart';
 import 'package:progresssoft_task/features/app/presentation/bloc/theme_bloc/theme_state.dart';
-import 'package:progresssoft_task/features/app/repository/app_repository.dart';
 import 'package:progresssoft_task/features/auth/presentation/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:progresssoft_task/features/auth/presentation/bloc/sign_up_bloc/sign_up_bloc.dart';
-import 'package:progresssoft_task/features/main/presentation/bloc/app_bloc.dart';
+import 'package:progresssoft_task/features/main/presentation/bloc/base_bloc/base_bloc.dart';
+import 'package:progresssoft_task/features/main/presentation/bloc/main_bloc/main_bloc.dart';
 
 class AppWidget extends StatefulWidget {
   final String language;
@@ -48,9 +50,11 @@ class _AppWidgetState extends State<AppWidget> {
               context: context,
             ),
           ),
+          BlocProvider(create: (_) => di.sl<AppBloc>()),
+          BlocProvider(create: (_) => di.sl<BaseBloc>()),
           BlocProvider(create: (_) => di.sl<SignInBloc>()),
           BlocProvider(create: (_) => di.sl<SignUpBloc>()),
-          BlocProvider(create: (_) => di.sl<AppBloc>()),
+          BlocProvider(create: (_) => di.sl<MainBloc>()),
         ],
         child: BlocBuilder<ThemeBloc, ThemeState>(
           builder: (context, state) {

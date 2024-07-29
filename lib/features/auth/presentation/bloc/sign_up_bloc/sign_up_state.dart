@@ -63,3 +63,12 @@ class GenderSelectedState extends SignUpState {
   @override
   List<Object?> get props => [selectedGender];
 }
+
+class CountryCodeSelectedState extends SignUpState {
+  final String countryCode;
+
+  CountryCodeSelectedState(this.countryCode);
+
+  @override
+  List<Object?> get props => [countryCode];
+}

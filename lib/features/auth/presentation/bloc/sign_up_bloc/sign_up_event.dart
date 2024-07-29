@@ -59,3 +59,12 @@ class SelectGenderEvent extends SignUpEvent {
   @override
   List<Object?> get props => [gender];
 }
+
+class SelectCountryCodeEvent extends SignUpEvent {
+  final String countryCode;
+
+  SelectCountryCodeEvent(this.countryCode);
+
+  @override
+  List<Object?> get props => [countryCode];
+}

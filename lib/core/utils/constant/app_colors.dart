@@ -17,6 +17,8 @@ class AppColors {
 
   static const Color lightDefaultColor = Color(0xFF0D3F7A);
 
+  static const Color lightNavBarColor = Color(0xFF555454);
+
   static const Color darkNavBarColor = Color(0xFF161616);
 
   static const Color darkDefaultColor = Color(0xFF1875E3);

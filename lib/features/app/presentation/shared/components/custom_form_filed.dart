@@ -102,7 +102,7 @@ class CustomFormFiled extends StatelessWidget {
       onFieldSubmitted: onSubmit,
       enabled: enabled,
       readOnly: readOnly,
-      maxLength: 100,
+      maxLength: maxLength,
       maxLines: maxLines,
       minLines: minLines,
       autofocus: autofocus,
@@ -184,7 +184,7 @@ class CustomFormFiled extends StatelessWidget {
               ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: AppColors.appErrorColor,
             width: 0.4,
           ),

@@ -33,3 +33,12 @@ class PasswordHiddenState extends SignInState {}
 class UserExistsInFireStoreState extends SignInState {}
 
 class UserDoesNotExistInFireStoreState extends SignInState {}
+
+class CountryCodeSelectedState extends SignInState {
+  final String countryCode;
+
+  CountryCodeSelectedState(this.countryCode);
+
+  @override
+  List<Object?> get props => [countryCode];
+}

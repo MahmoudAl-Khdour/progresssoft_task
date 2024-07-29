@@ -46,15 +46,15 @@ void main() {
       'should return [Failure] when the call to the repository is unsuccessful',
       () async {
     // Arrange
-    final tFailure = ServerFailure();
+    const tFailure = ServerFailure();
     when(mockUserRepository.createUser(userInfo: anyNamed('userInfo')))
-        .thenAnswer((_) async => Left(tFailure));
+        .thenAnswer((_) async => const Left(tFailure));
 
     // Act
     final result = await useCase.call(userInfo: tUserInfo);
 
     // Assert
-    expect(result, Left(tFailure));
+    expect(result, const Left(tFailure));
     verify(mockUserRepository.createUser(userInfo: tUserInfo));
     verifyNoMoreInteractions(mockUserRepository);
   });
