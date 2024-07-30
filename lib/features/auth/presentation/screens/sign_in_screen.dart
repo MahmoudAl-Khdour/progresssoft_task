@@ -41,6 +41,8 @@ class SignInScreen extends StatelessWidget {
             title: 'Sign In'.tr,
             message: state.errorMessage,
           );
+        } else if (state is CountryCodeSelectedState) {
+          countryCode = state.countryCode;
         }
       },
       builder: (context, state) {

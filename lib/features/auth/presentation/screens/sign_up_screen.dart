@@ -66,6 +66,8 @@ class SignUpScreen extends StatelessWidget {
         } else if (state is PhoneAuthErrorState) {
           CustomSnackBar.error(
               title: 'Sign Up'.tr, message: state.errorMessage);
+        } else if (state is CountryCodeSelectedState) {
+          countryCode = state.countryCode;
         }
       },
       builder: (context, state) {
