@@ -67,7 +67,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       age: event.age,
     );
 
-    final result = await createUserUseCase.call(userInfo: userInfo);
+    final result = await createUserUseCase(userInfo: userInfo);
 
     result.fold(
       (failure) {

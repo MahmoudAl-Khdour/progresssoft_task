@@ -1,6 +1,9 @@
 // Injection file contain all injection methods feature, and it is called from the main.dart
 // Using GetIt
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:progresssoft_task/core/utils/repository/app_repository.dart';
 import 'package:progresssoft_task/features/app/data/repositories/config_repository_impl.dart';
@@ -73,13 +76,29 @@ Future<void> initInjections() async {
   sl.registerLazySingleton<PostsRepository>(
       () => PostRepositoryImpl(remoteDataSources: sl()));
 
-  sl.registerLazySingleton(() => FirebaseService());
+  sl.registerLazySingleton<FirebaseService>(() => FirebaseServiceImpl(
+        auth: sl(),
+        fireStore: sl(),
+      ));
   sl.registerLazySingleton(() => FirebaseConfigService());
-  sl.registerLazySingleton(() => RemoteDataSources());
+  sl.registerLazySingleton<RemoteDataSources>(
+      () => PostRemoteDataSourcesImpl(dio: sl()));
 
   // External
 
   final sharedPreferences = await SharedPreferences.getInstance();
 
+  final Dio dio = Dio(BaseOptions(
+    receiveDataWhenStatusError: true,
+    connectTimeout: const Duration(minutes: 1),
+    receiveTimeout: const Duration(minutes: 1),
+  ));
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
   sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton(() => dio);
+  sl.registerLazySingleton(() => auth);
+  sl.registerLazySingleton(() => fireStore);
 }

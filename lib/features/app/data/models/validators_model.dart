@@ -1,16 +1,11 @@
-import 'package:equatable/equatable.dart';
+import 'package:progresssoft_task/features/app/domian/entites/validators.dart';
 
-class ValidatorsModel extends Equatable {
-  final String birthDate;
-  final String fullName;
-  final String password;
-  final Map<String, String> phone;
-
+class ValidatorsModel extends Validators {
   const ValidatorsModel({
-    required this.birthDate,
-    required this.fullName,
-    required this.password,
-    required this.phone,
+    required super.birthDate,
+    required super.fullName,
+    required super.password,
+    required super.phone,
   });
 
   factory ValidatorsModel.fromJson(Map<String, dynamic> json) {
@@ -26,13 +21,10 @@ class ValidatorsModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'birth_Date': birthDate,
+      'birth_date': birthDate,
       'full_name': fullName,
       'password': password,
       'phone': phone,
     };
   }
-
-  @override
-  List<Object?> get props => [birthDate, fullName, password, phone];
 }

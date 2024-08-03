@@ -4,22 +4,21 @@ import 'package:get/get.dart';
 import 'package:progresssoft_task/core/error/exceptions.dart';
 import 'package:progresssoft_task/core/error/failures.dart';
 import 'package:progresssoft_task/core/strings/messages.dart';
+import 'package:progresssoft_task/core/utils/constant/app_urls.dart';
 import 'package:progresssoft_task/features/main/data/models/post_model.dart';
 
-class RemoteDataSources {
-  final String _getAllPostsUrl = "https://jsonplaceholder.typicode.com/posts";
+abstract class RemoteDataSources {
+  Future<Either<Failure, List<PostModel>>> getAllPosts();
+}
 
-  final Dio _dio = Dio(BaseOptions(
-    receiveDataWhenStatusError: true,
-    connectTimeout: const Duration(minutes: 1),
-    receiveTimeout: const Duration(minutes: 1),
-  ));
+class PostRemoteDataSourcesImpl extends RemoteDataSources {
+  final Dio dio;
+  PostRemoteDataSourcesImpl({required this.dio});
 
+  @override
   Future<Either<Failure, List<PostModel>>> getAllPosts() async {
     try {
-      final getAllPostsResponse = await _dio.get(
-        _getAllPostsUrl,
-      );
+      final getAllPostsResponse = await dio.get(Urls.allPosts);
 
       if (getAllPostsResponse.statusCode == 200) {
         List<PostModel> posts = (getAllPostsResponse.data as List)

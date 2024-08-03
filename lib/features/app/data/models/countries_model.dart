@@ -1,10 +1,8 @@
-import 'package:equatable/equatable.dart';
+import 'package:progresssoft_task/features/app/domian/entites/countries_entity.dart';
 
-class CountriesModel extends Equatable {
-  final List<String> countries;
-
+class CountriesModel extends CountriesEntity {
   const CountriesModel({
-    required this.countries,
+    required super.countries,
   });
 
   factory CountriesModel.fromJson(Map<String, dynamic> json) {
@@ -18,7 +16,4 @@ class CountriesModel extends Equatable {
       'countries': countries,
     };
   }
-
-  @override
-  List<Object?> get props => [countries];
 }

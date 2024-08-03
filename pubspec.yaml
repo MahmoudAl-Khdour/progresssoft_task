@@ -54,18 +54,13 @@ dependencies:
   # Implementations of SHA, MD5, and HMAC cryptographic functions
   crypto: ^3.0.3
 
-  # Inspired by Mockito with APIs for Fakes, Mocks, behavior verification, and stubbing
-  mockito: ^5.0.17
-
-  # Dart code generation and modular compilation
-  build_runner: ^2.1.11
-
   # A build system for Dart code generation and modular compilation.
   flutter_otp_text_field: ^1.1.3+2
 
   #  SVG rendering
   flutter_svg: ^2.0.10+1
 
+  # A flutter package to select a country from a list of countries.
   country_picker: ^2.0.26
 
 dev_dependencies:
@@ -73,6 +68,18 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+
+  # Inspired by Mockito with APIs for Fakes, Mocks, behavior verification, and stubbing
+  mockito: ^5.0.17
+
+  # A Dart mock library which simplifies mocking with null safety support and no manual mocks or code generation.
+  mocktail: ^1.0.4
+
+  # A testing library which makes it easy to test blocs. Built to be used with the bloc state management package
+  bloc_test: ^9.1.7
+
+  # Dart code generation and modular compilation
+  build_runner: ^2.1.11
 
 flutter:
   uses-material-design: true

@@ -1,16 +1,12 @@
-class UserModel {
-  final String fullName;
-  final String phoneNumber;
-  final String password;
-  final int gender;
-  final int age;
+import 'package:progresssoft_task/features/auth/domain/entites/user_info.dart';
 
-  UserModel({
-    required this.fullName,
-    required this.phoneNumber,
-    required this.password,
-    required this.gender,
-    required this.age,
+class UserModel extends UserInfo {
+  const UserModel({
+    required super.fullName,
+    required super.phoneNumber,
+    required super.password,
+    required super.gender,
+    required super.age,
   });
 
   Map<String, dynamic> toMap() {

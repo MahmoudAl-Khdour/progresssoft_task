@@ -14,5 +14,5 @@ class Posts extends Equatable {
   });
 
   @override
-  List<Object?> get props => [userId, id, body, title];
+  List<Object?> get props => [userId, id, title, body];
 }

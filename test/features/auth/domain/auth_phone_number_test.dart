@@ -4,39 +4,37 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:progresssoft_task/core/error/failures.dart';
 import 'package:progresssoft_task/features/auth/domain/repositories/user_repository.dart';
-import 'package:progresssoft_task/features/auth/domain/usecases/verify_otp_code.dart';
+import 'package:progresssoft_task/features/auth/domain/usecases/auth_phone_number.dart';
 
-import 'verify_otp_code_test.mocks.dart';
+import '../helper/test_main_helper.mocks.dart';
 
 @GenerateMocks([UserRepository])
 void main() {
-  late VerifyOTPUseCase useCase;
+  late PhoneNumberAuthenticationUseCase useCase;
   late MockUserRepository mockUserRepository;
 
   setUp(() {
     mockUserRepository = MockUserRepository();
-    useCase = VerifyOTPUseCase(userRepository: mockUserRepository);
+    useCase =
+        PhoneNumberAuthenticationUseCase(userRepository: mockUserRepository);
   });
 
-  const tOtpCode = '123456';
+  const tPhoneNumber = '+962788314198';
 
   test('should return [Unit] when the call to the repository is successful',
       () async {
     // Arrange
-    when(mockUserRepository.verifyOTP(
-      otpCode: anyNamed('otpCode'),
-    )).thenAnswer((_) async => const Right(unit));
+    when(mockUserRepository.phoneNumberAuthentication(
+            phoneNumber: anyNamed('phoneNumber')))
+        .thenAnswer((_) async => const Right(unit));
 
     // Act
-    final result = await useCase.call(
-      otpCode: tOtpCode,
-    );
+    final result = await useCase.call(phoneNumber: tPhoneNumber);
 
     // Assert
     expect(result, const Right(unit));
-    verify(mockUserRepository.verifyOTP(
-      otpCode: tOtpCode,
-    ));
+    verify(mockUserRepository.phoneNumberAuthentication(
+        phoneNumber: tPhoneNumber));
     verifyNoMoreInteractions(mockUserRepository);
   });
 
@@ -45,20 +43,17 @@ void main() {
       () async {
     // Arrange
     const tFailure = ServerFailure();
-    when(mockUserRepository.verifyOTP(
-      otpCode: anyNamed('otpCode'),
-    )).thenAnswer((_) async => const Left(tFailure));
+    when(mockUserRepository.phoneNumberAuthentication(
+            phoneNumber: anyNamed('phoneNumber')))
+        .thenAnswer((_) async => const Left(tFailure));
 
     // Act
-    final result = await useCase.call(
-      otpCode: tOtpCode,
-    );
+    final result = await useCase.call(phoneNumber: tPhoneNumber);
 
     // Assert
     expect(result, const Left(tFailure));
-    verify(mockUserRepository.verifyOTP(
-      otpCode: tOtpCode,
-    ));
+    verify(mockUserRepository.phoneNumberAuthentication(
+        phoneNumber: tPhoneNumber));
     verifyNoMoreInteractions(mockUserRepository);
   });
 }

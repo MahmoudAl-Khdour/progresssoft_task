@@ -15,11 +15,11 @@ Future<void> main() async {
 
   await CacheHelper.init();
 
-  await di.initInjections();
-
   FirebaseApp app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await di.initInjections();
 
   String language = await CacheHelper.getData(key: 'lang') ?? 'en';
   String theme = await CacheHelper.getData(key: 'theme') ?? 'light';

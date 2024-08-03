@@ -9,24 +9,41 @@ import 'package:progresssoft_task/core/error/failures.dart';
 import 'package:progresssoft_task/core/strings/messages.dart';
 import 'package:progresssoft_task/features/auth/data/models/user_model.dart';
 
-class FirebaseService {
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  static String? _verificationId;
+abstract class FirebaseService {
+  Future<Either<Failure, Unit>> createUser({required UserModel user});
+  Future<Either<Failure, Unit>> phoneAuthentication({
+    required String phoneNumber,
+  });
+  Future<Either<Failure, Unit>> verifyOTP({
+    required String otpCode,
+  });
+  Future<Either<Failure, UserModel>> signIn({
+    required String phoneNumber,
+    required String password,
+  });
+}
 
+class FirebaseServiceImpl extends FirebaseService {
+  final FirebaseFirestore fireStore;
+  final FirebaseAuth auth;
+  static String? verificationId;
+
+  FirebaseServiceImpl({required this.fireStore, required this.auth});
+
+  @override
   Future<Either<Failure, Unit>> createUser({
     required UserModel user,
   }) async {
     try {
       final userDoc =
-          await _fireStore.collection('users').doc(user.phoneNumber).get();
+          await fireStore.collection('users').doc(user.phoneNumber).get();
 
       if (userDoc.exists) {
         return Left(
             ServerFailure(message: AppMessages.userAlreadyUsedMessage.tr));
       }
 
-      await _fireStore
+      await fireStore
           .collection('users')
           .doc(user.phoneNumber)
           .set(user.toMap());
@@ -39,12 +56,13 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<Either<Failure, Unit>> phoneAuthentication({
     required String phoneNumber,
   }) async {
     try {
       final userDoc =
-          await _fireStore.collection('users').doc(phoneNumber).get();
+          await fireStore.collection('users').doc(phoneNumber).get();
       Either<Failure, Unit> result = const Right(unit);
 
       if (userDoc.exists) {
@@ -52,22 +70,22 @@ class FirebaseService {
             ServerFailure(message: AppMessages.userAlreadyUsedMessage.tr));
       }
 
-      await _auth.verifyPhoneNumber(
+      await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 120),
         verificationCompleted: (credential) async {
           try {
-            await _auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
             result = const Right(unit);
           } catch (e) {
             result = Left(ServerFailure(message: e.toString()));
           }
         },
         codeSent: (verificationId, forceResendingToken) {
-          _verificationId = verificationId;
+          verificationId = verificationId;
         },
         codeAutoRetrievalTimeout: (verificationId) {
-          _verificationId = verificationId;
+          verificationId = verificationId;
         },
         verificationFailed: (error) {
           result = Left(ServerFailure(
@@ -83,13 +101,14 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<Either<Failure, Unit>> verifyOTP({
     required String otpCode,
   }) async {
     try {
-      await _auth.signInWithCredential(
+      await auth.signInWithCredential(
         PhoneAuthProvider.credential(
-          verificationId: _verificationId!,
+          verificationId: verificationId!,
           smsCode: otpCode,
         ),
       );
@@ -113,13 +132,14 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<Either<Failure, UserModel>> signIn({
     required String phoneNumber,
     required String password,
   }) async {
     try {
       final userDoc =
-          await _fireStore.collection('users').doc(phoneNumber).get();
+          await fireStore.collection('users').doc(phoneNumber).get();
 
       if (userDoc.exists) {
         final userData = userDoc.data();

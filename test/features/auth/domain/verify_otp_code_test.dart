@@ -6,7 +6,7 @@ import 'package:progresssoft_task/core/error/failures.dart';
 import 'package:progresssoft_task/features/auth/domain/repositories/user_repository.dart';
 import 'package:progresssoft_task/features/auth/domain/usecases/verify_otp_code.dart';
 
-import '../../domain/usecases/verify_otp_code/verify_otp_code_test.mocks.dart';
+import '../helper/test_main_helper.mocks.dart';
 
 @GenerateMocks([UserRepository])
 void main() {

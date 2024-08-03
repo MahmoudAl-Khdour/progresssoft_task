@@ -7,7 +7,7 @@ import 'package:progresssoft_task/features/auth/domain/entites/user_info.dart';
 import 'package:progresssoft_task/features/auth/domain/repositories/user_repository.dart';
 import 'package:progresssoft_task/features/auth/domain/usecases/sign_in.dart';
 
-import 'sign_in_test.mocks.dart';
+import '../helper/test_main_helper.mocks.dart';
 
 @GenerateMocks([UserRepository])
 void main() {

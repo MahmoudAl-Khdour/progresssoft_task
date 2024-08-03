@@ -1,16 +1,11 @@
-import 'package:equatable/equatable.dart';
+import 'package:progresssoft_task/features/main/domain/entites/posts.dart';
 
-class PostModel extends Equatable {
-  final int userId;
-  final int id;
-  final String title;
-  final String body;
-
+class PostModel extends Posts {
   const PostModel({
-    required this.userId,
-    required this.id,
-    required this.title,
-    required this.body,
+    required super.userId,
+    required super.id,
+    required super.title,
+    required super.body,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +17,12 @@ class PostModel extends Equatable {
     );
   }
 
-  @override
-  List<Object?> get props => [userId, id, title, body];
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'id': id,
+      'title': title,
+      'body': body,
+    };
+  }
 }
